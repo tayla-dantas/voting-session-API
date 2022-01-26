@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+
+  mysqlsrv:
+    image: mysql:8.0
+    container_name: mysql
+    expose:
+      - 3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "MySql2019!"
+      MYSQL_DATABASE: "testedb"
+    ports:
+      - "3306:3306"
+    volumes:
+      - /usr/local/share/Docker/Volumes/MySql:/var/lib/mysql
+    network_mode: bridge
+
+
+  adminer:
+    image: adminer
+    ports:
+      - "8080:8080"
+    network_mode: bridge
+
+
