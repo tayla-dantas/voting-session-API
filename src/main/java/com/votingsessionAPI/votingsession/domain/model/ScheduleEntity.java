@@ -22,4 +22,7 @@ public class ScheduleEntity {
     @Column(name = "name")
     String name;
 
+    @OneToOne(cascade=CascadeType.MERGE)
+    VotingSessionEntity votingSession;
+
 }
