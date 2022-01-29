@@ -2,12 +2,17 @@ package com.votingsessionAPI.votingsession.domain.service.impl;
 
 import com.votingsessionAPI.votingsession.domain.BusinessException;
 import com.votingsessionAPI.votingsession.domain.dto.ScheduleDTO;
+import com.votingsessionAPI.votingsession.domain.dto.VoteResultDTO;
 import com.votingsessionAPI.votingsession.domain.dto.VotingSessionDTO;
 import com.votingsessionAPI.votingsession.domain.model.ScheduleEntity;
+
+import com.votingsessionAPI.votingsession.domain.model.VoteResultEntity;
 import com.votingsessionAPI.votingsession.domain.model.VotingSessionEntity;
 import com.votingsessionAPI.votingsession.domain.service.ScheduleService;
+import com.votingsessionAPI.votingsession.infraestructure.dao.AssociateRepository;
 import com.votingsessionAPI.votingsession.infraestructure.dao.ScheduleRepository;
 import com.votingsessionAPI.votingsession.infraestructure.dao.VotingRepository;
+import com.votingsessionAPI.votingsession.infraestructure.dao.VotingResultRepository;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,21 +26,24 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     private final ModelMapper modelMapper = new ModelMapper();
 
-    @Autowired
-    ScheduleRepository scheduleRepository;
+    private Logger logger = LoggerFactory.getLogger(ScheduleServiceImpl.class);
 
     @Autowired
-    VotingRepository votingRepository;
+    private ScheduleRepository scheduleRepository;
 
-    Logger logger = LoggerFactory.getLogger(ScheduleServiceImpl.class);
+    @Autowired
+    private VotingRepository votingRepository;
 
+    @Autowired
+    private VotingResultRepository votingResultRepository;
     @Override
     public ScheduleDTO createSchedule(ScheduleDTO schedule) throws BusinessException {
         try {
             logger.warn("Trying to save schedule: {}", schedule);
 
-            ScheduleEntity createdEntity = scheduleRepository.save(modelMapper.map(schedule, ScheduleEntity.class));
-
+            ScheduleEntity createdEntity = modelMapper.map(schedule, ScheduleEntity.class);
+            //createdEntity.setVotingSession(getDefaultVotingSession(createdEntity.getId()));
+            scheduleRepository.save(createdEntity);
             logger.info("Schedule saved successfully!");
 
             return modelMapper.map(createdEntity, ScheduleDTO.class);
@@ -57,37 +65,6 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
     }
 
-    @Override
-    public ScheduleDTO createVotingSession(VotingSessionDTO votingSession) throws BusinessException {
-        try {
-            logger.warn("Trying to update schedule id: {} and voting session: {}", votingSession.getScheduleId(), votingSession);
-            ScheduleEntity scheduleEntity = getUpdatedScheduleEntity(votingSession);
-            votingRepository.save(scheduleEntity.getVotingSession());
-            scheduleRepository.save(scheduleEntity);
 
-
-            logger.info("Schedule updated successfully!");
-
-            return getScheduleById(votingSession.getScheduleId());
-        } catch (Exception e) {
-            throw new BusinessException("Error while updating schedule");
-        }
-    }
-
-    private ScheduleEntity getUpdatedScheduleEntity(VotingSessionDTO votingSession) {
-
-        Optional<ScheduleEntity> schedule = scheduleRepository.findById(votingSession.getScheduleId());
-        ScheduleEntity scheduleEntity =  schedule.get();
-        votingSessionEntityMapper(votingSession, scheduleEntity);
-        return scheduleEntity;
-    }
-
-    private VotingSessionEntity votingSessionEntityMapper(VotingSessionDTO votingSession, ScheduleEntity scheduleEntity) {
-        VotingSessionEntity votingSessionEntity = modelMapper.map(votingSession, VotingSessionEntity.class);
-        votingSessionEntity.setExpireTime(votingSession.getExpireTime().toString());
-        votingSessionEntity.setResult(votingSession.getResult());
-        scheduleEntity.setVotingSession(votingSessionEntity);
-        return votingSessionEntity;
-    }
 
 }
