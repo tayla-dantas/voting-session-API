@@ -1,21 +1,21 @@
 package com.votingsessionAPI.votingsession.domain.dto;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ScheduleDTO {
 
     @Id
-    Long id;
+    private Long id;
 
     @NonNull
-    String name;
+    private String name;
 
-    VotingSessionDTO votingSession;
+    private VotingSessionDTO votingSession;
 
 
 }

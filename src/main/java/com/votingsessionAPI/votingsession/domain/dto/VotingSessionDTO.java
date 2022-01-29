@@ -8,6 +8,7 @@ import java.time.LocalTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @RequiredArgsConstructor
 public class VotingSessionDTO {
 
@@ -17,13 +18,11 @@ public class VotingSessionDTO {
     private Long id;
 
     @NonNull
-    Long scheduleId ;
+    private Long scheduleId;
 
-    Integer result = 0;
+    @NonNull
+    private VoteResultDTO result;
 
-    LocalTime expireTime = LocalTime.now().plusMinutes(DEFAULT_EXPIRE_TIME);
+    private LocalTime expireTime = LocalTime.now().plusMinutes(DEFAULT_EXPIRE_TIME);
 
-    public void setExpireTime(LocalTime expireTime) {
-        this.expireTime = expireTime;
-    }
 }

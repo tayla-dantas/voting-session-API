@@ -16,11 +16,15 @@ import javax.persistence.*;
 public class AssociateEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NonNull
+    @Enumerated(EnumType.STRING)
     @Column(name = "vote")
-    String vote;
+    private Vote vote;
+
+    @NonNull
+    @Column(name = "voteSessionId")
+    private Long voteSessionId;
 
 }

@@ -20,9 +20,9 @@ public class ScheduleEntity {
 
     @NonNull
     @Column(name = "name")
-    String name;
+    private String name;
 
     @OneToOne(cascade=CascadeType.MERGE)
-    VotingSessionEntity votingSession;
+    private VotingSessionEntity votingSession;
 
 }

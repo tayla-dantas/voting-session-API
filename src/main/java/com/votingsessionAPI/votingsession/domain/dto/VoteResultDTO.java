@@ -1,6 +1,5 @@
 package com.votingsessionAPI.votingsession.domain.dto;
 
-import com.votingsessionAPI.votingsession.domain.enums.Vote;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 
@@ -8,15 +7,24 @@ import org.springframework.data.annotation.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class AssociateDTO {
+@RequiredArgsConstructor
+public class VoteResultDTO {
 
     @Id
     private Long id;
 
     @NonNull
-    private Vote vote;
+    private Long votingSessionId;
 
     @NonNull
-    private Long voteSessionId;
+    private Long totalAmount;
 
+    @NonNull
+    private Long yes;
+
+    @NonNull
+    private Long no;
+
+    @NonNull
+    private String finalResult;
 }

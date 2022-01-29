@@ -17,15 +17,14 @@ public class VotingSessionEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NonNull
-    @Column(name = "result")
-    Integer result;
+    @OneToOne(cascade=CascadeType.MERGE)
+    private VoteResultEntity result;
 
     @NonNull
     @Column(name = "expireTime")
-    String expireTime;
+    private String expireTime;
 
     @NonNull
     @Column(name = "scheduleId")
-    Long scheduleId;
+    private Long scheduleId;
 }
