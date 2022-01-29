@@ -12,7 +12,7 @@ After running the script the application is fully deployed and you can run it as
 In the folder collections theres all the requests to access the api funcionalities.
 To use them, just import them in postman. 
 
-##Design choices 
+## Design choices 
 
 ### Java
 
